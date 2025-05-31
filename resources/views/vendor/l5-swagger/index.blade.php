@@ -13,8 +13,8 @@
     <style>
     /* Variables CSS para branding Talana - Paleta actualizada de https://www.color-hex.com/color-palette/49840 */
     :root {
-        --talana-primary: #ff8c94;
-        --talana-secondary: #ff9aa2;
+        --talana-primary: #babae8;
+        --talana-secondary: #5f60cb;
         --talana-accent: #ffd3a5;
         --talana-success: #fd9853;
         --talana-light-pink: #a8e6cf;
@@ -84,15 +84,11 @@
     .talana-logo-icon {
         width: 50px;
         height: 50px;
-        background: var(--talana-accent);
-        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
         font-size: 20px;
-        color: var(--talana-dark);
-        box-shadow: 0 4px 12px rgba(255, 211, 165, 0.3);
     }
 
     .talana-brand {
@@ -259,7 +255,9 @@
     <header class="talana-header">
         <div class="talana-header-content">
             <div class="talana-logo">
-                <div class="talana-logo-icon">T</div>
+                <div class="talana-logo-icon">
+                    <img src="{{ asset('storage/images/profile-icon.png') }}" alt="Talana Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
                 <div>
                     <h1 class="talana-brand">Talana</h1>
                     <p class="talana-tagline">TalaTrivia API Documentation</p>

@@ -1,18 +1,13 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Talana TalaTrivia API",
-        "description": "API RESTful para el sistema de trivia TalaTrivia desarrollado por Talana. Esta API permite gestionar usuarios, crear preguntas con diferentes niveles de dificultad, organizar trivias y gestionar la participación de jugadores con sistemas de puntuación y ranking en tiempo real.",
+        "title": "TalaTrivia API - Sistema de Trivias Interactivas",
+        "description": "API REST para el sistema de trivias TalaTrivia. Permite la gestión completa de usuarios con roles diferenciados (administradores y jugadores), creación y administración de preguntas con múltiples niveles de dificultad, organización de trivias personalizables con asignación de participantes, sistema de respuestas en tiempo real con validación automática, puntuación inteligente basada en dificultad y tiempo de respuesta, rankings dinámicos y estadísticas detalladas de rendimiento. Ideal para empresas, instituciones educativas y plataformas de entretenimiento que buscan implementar sistemas de evaluación gamificados y competencias interactivas.",
         "contact": {
-            "name": "Equipo Talana",
-            "url": "https://talana.com",
-            "email": "tech@talana.com"
+            "name": "Francisco Arenas",
+            "email": "francisco.arenasp@gmail.com"
         },
-        "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/licenses/MIT"
-        },
-        "version": "2.0.0"
+        "version": "1.0.0"
     },
     "servers": [
         {
@@ -20,8 +15,8 @@
             "description": "Servidor de desarrollo local"
         },
         {
-            "url": "http://localhost",
-            "description": "Servidor alternativo local"
+            "url": "https://api.talatrivia.com",
+            "description": "Servidor de producción"
         }
     ],
     "paths": {
@@ -924,6 +919,10 @@
             "ErrorResponse": {
                 "title": "Respuesta de Error",
                 "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": false
+                    },
                     "message": {
                         "type": "string",
                         "example": "Mensaje de error"
@@ -932,6 +931,11 @@
                         "description": "Detalles específicos del error",
                         "type": "object",
                         "nullable": true
+                    },
+                    "code": {
+                        "description": "Código de estado HTTP",
+                        "type": "integer",
+                        "example": 400
                     }
                 },
                 "type": "object"
@@ -939,6 +943,10 @@
             "SuccessResponse": {
                 "title": "Respuesta Exitosa",
                 "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": true
+                    },
                     "message": {
                         "type": "string",
                         "example": "Operación exitosa"
@@ -947,6 +955,41 @@
                         "description": "Datos de la respuesta",
                         "type": "object",
                         "nullable": true
+                    },
+                    "meta": {
+                        "description": "Metadatos adicionales como paginación",
+                        "type": "object",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "PaginationMeta": {
+                "title": "Metadatos de Paginación",
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 15
                     }
                 },
                 "type": "object"
@@ -961,6 +1004,10 @@
                     "user_name": {
                         "type": "string",
                         "example": "Juan Pérez"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "juan.perez@example.com"
                     },
                     "total_score": {
                         "description": "Puntaje total obtenido",
@@ -977,6 +1024,12 @@
                         "type": "integer",
                         "example": 6
                     },
+                    "accuracy": {
+                        "description": "Porcentaje de precisión",
+                        "type": "number",
+                        "format": "float",
+                        "example": 83.33
+                    },
                     "completion_time": {
                         "description": "Tiempo de finalización",
                         "type": "string",
@@ -986,6 +1039,31 @@
                         "description": "Posición en el ranking",
                         "type": "integer",
                         "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "ValidationError": {
+                "title": "Error de Validación",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Los datos proporcionados no son válidos"
+                    },
+                    "errors": {
+                        "type": "object",
+                        "example": {
+                            "email": [
+                                "El campo email es obligatorio."
+                            ],
+                            "password": [
+                                "La contraseña debe tener al menos 8 caracteres."
+                            ]
+                        }
                     }
                 },
                 "type": "object"
