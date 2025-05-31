@@ -9,36 +9,99 @@ Una aplicación de trivia construida con Laravel y completamente dockerizada par
 - Docker
 - Git
 
-### Instalación
+## 🚀 Instalación Rápida
 
-1. **Clonar el repositorio**
+> **⚡ ¡Ejecuta tu API TalaTrivia en menos de 5 minutos!**
 
-   ```bash
-   git clone https://github.com/FranciscoArenas/TalaTrivia.git
-   cd TalaTrivia
-   ```
+### 📋 Prerrequisitos
 
-2. **Configuración inicial automática**
+Asegúrate de tener instalado:
+- ✅ **Docker** (con Docker Compose)
+- ✅ **Git**
 
-   **En Windows (PowerShell):**
+---
 
-   ```powershell
-   .\docker\start.ps1
-   ```
+### 🛠️ Pasos de Instalación
 
-   **En Linux/Mac:**
+#### **1️⃣ Clonar el repositorio**
 
-   ```bash
-   chmod +x docker/start.sh
-   ./docker/start.sh
-   ```
+```bash
+git clone https://github.com/FranciscoArenas/TalaTrivia.git
+cd TalaTrivia
+```
 
+#### **2️⃣ Ejecutar configuración automática**
 
+<details>
+<summary><strong>🐧 Para Linux/Mac</strong></summary>
 
-3. **¡Listo!** Tu aplicación estará disponible en:
-   - 🌐 **Aplicación**: http://localhost:8000
-   - 🗄️ **MySQL**: localhost:3306
-   - 🔴 **Redis**: localhost:6379
+```bash
+chmod +x docker/start.sh
+./docker/start.sh
+```
+
+</details>
+
+<details>
+<summary><strong>🪟 Para Windows (PowerShell)</strong></summary>
+
+```powershell
+.\docker\start.ps1
+```
+
+</details>
+
+#### **3️⃣ ¡Todo listo! 🎉**
+
+> **⏱️ Tiempo estimado:** 3-5 minutos (dependiendo de la conexión a internet)
+
+---
+
+## 🌐 Tu aplicación estará disponible en:
+
+<table>
+<tr>
+<td align="center">
+
+### 🚀 **API Principal**
+**http://localhost:8000**
+
+Documentación Swagger incluida
+
+</td>
+<td align="center">
+
+### 🗄️ **Base de Datos MySQL**
+**localhost:3306**
+
+Usuario: `tala_trivia`
+Contraseña: `tala_trivia`
+
+</td>
+<td align="center">
+
+### 🔴 **Redis Cache**
+**localhost:6379**
+
+Para sesiones y caché
+
+</td>
+</tr>
+</table>
+
+---
+
+### 🔗 Enlaces Rápidos
+
+| Servicio | URL | Descripción |
+|----------|-----|-------------|
+| 📚 **API Docs** | [http://localhost:8000/api/documentation](http://localhost:8000/api/documentation) | Documentación Swagger interactiva |
+| 🎯 **API Base** | [http://localhost:8000/api](http://localhost:8000/api) | Endpoint base de la API |
+| 🔍 **Health Check** | [http://localhost:8000/health](http://localhost:8000/health) | Estado de la aplicación |
+
+> 💡 **Tip:** Guarda estos enlaces en tus favoritos para acceso rápido durante el desarrollo.
+
+---
 
 ## 🔧 Comandos Útiles
 
@@ -110,40 +173,8 @@ docker/
 - **Puerto**: `6379`
 
 
-## 🔄 Desarrollo
 
-Para desarrollo activo, puedes usar:
-
-```bash
-# Modo watch para assets
-docker-compose exec app npm run dev --watch
-
-# Acceder al shell del contenedor
-docker-compose exec app bash
-
-# Ver logs en tiempo real
-docker-compose logs -f app
-```
-
-## 🛠️ Solución de Problemas
-
-Consulta `docker/README.md` para información detallada sobre solución de problemas comunes.
-
-### Reiniciar todo desde cero
-
-```bash
-# Con Make
-make reset
-
-# Manualmente
-docker-compose down -v
-docker system prune -f
-docker-compose up -d --build
-```
-
----
-
-## Sobre la tecnologia de la API
+## 💻 Sobre la tecnologia de la API
 
 
 ### Tecnologías Utilizadas
