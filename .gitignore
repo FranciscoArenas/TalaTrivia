@@ -1,0 +1,37 @@
+# Laravel específico
+/vendor
+/node_modules
+/public/hot
+/public/build
+/public/storage
+/storage/*.key
+/storage/pail
+/.env
+
+# Logs
+*.log
+storage/logs/*
+
+# Cache
+/bootstrap/cache/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+
+# Base de datos
+database/*.sqlite
+database/*.db
+*.sql
+dumps/
+
+# Backups
+backups/*
+*.backup
+
+# IDEs
+/.vscode
+
+# Docker
+/.docker-data
+
