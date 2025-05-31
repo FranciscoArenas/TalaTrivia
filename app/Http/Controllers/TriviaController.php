@@ -10,7 +10,39 @@ use Illuminate\Support\Facades\DB;
 
 class TriviaController extends Controller
 {
-
+    /**
+     * @OA\Get(
+     *     path="/api/trivias",
+     *     summary="Listar trivias",
+     *     tags={"Trivias"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         description="Filtrar por estado",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"draft", "active", "completed"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="created_by",
+     *         in="query",
+     *         description="Filtrar por creador",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de trivias",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="trivias",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Trivia")
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function index(Request $request): JsonResponse
     {
         $query = Trivia::with(['creator:id,name', 'questions', 'users'])
@@ -41,7 +73,52 @@ class TriviaController extends Controller
         ]);
     }
 
-
+    /**
+     * @OA\Post(
+     *     path="/api/trivias",
+     *     summary="Crear nueva trivia",
+     *     tags={"Trivias"},
+     *     security={{"sanctum": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name","description","question_ids","user_ids"},
+     *             @OA\Property(property="name", type="string", example="Trivia de Historia"),
+     *             @OA\Property(property="description", type="string", example="Una trivia sobre historia mundial"),
+     *             @OA\Property(property="starts_at", type="string", format="date-time", example="2023-01-01T10:00:00Z"),
+     *             @OA\Property(property="ends_at", type="string", format="date-time", example="2023-01-01T12:00:00Z"),
+     *             @OA\Property(
+     *                 property="question_ids",
+     *                 type="array",
+     *                 @OA\Items(type="integer"),
+     *                 example={1, 2, 3}
+     *             ),
+     *             @OA\Property(
+     *                 property="user_ids",
+     *                 type="array",
+     *                 @OA\Items(type="integer"),
+     *                 example={1, 2, 3}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Trivia creada exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Trivia creada exitosamente"),
+     *             @OA\Property(property="trivia", ref="#/components/schemas/Trivia")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     )
+     * )
+     */
     public function store(StoreTriviaRequest $request): JsonResponse
     {
         try {
@@ -209,7 +286,44 @@ class TriviaController extends Controller
         ]);
     }
 
-
+    /**
+     * @OA\Get(
+     *     path="/api/trivias/{id}/ranking",
+     *     summary="Obtener ranking de una trivia específica",
+     *     tags={"Trivias"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID de la trivia",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Ranking de la trivia",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="trivia",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="name", type="string"),
+     *                 @OA\Property(property="description", type="string")
+     *             ),
+     *             @OA\Property(
+     *                 property="ranking",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/TriviaRanking")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Trivia no encontrada",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
+     */
     public function ranking(string $id): JsonResponse
     {
         $trivia = Trivia::findOrFail($id);

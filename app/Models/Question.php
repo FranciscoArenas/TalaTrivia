@@ -5,6 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     schema="Question",
+ *     type="object",
+ *     title="Pregunta",
+ *     required={"id", "question", "difficulty"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="question", type="string", example="¿Cuál es la capital de Francia?"),
+ *     @OA\Property(property="difficulty", type="string", enum={"easy", "medium", "hard"}, example="easy"),
+ *     @OA\Property(property="created_by", type="integer", example=1),
+ *     @OA\Property(
+ *         property="options",
+ *         type="array",
+ *         @OA\Items(ref="#/components/schemas/QuestionOption")
+ *     ),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 class Question extends Model
 {
     use HasFactory;

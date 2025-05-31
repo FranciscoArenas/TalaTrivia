@@ -11,7 +11,39 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
-   
+    /**
+     * @OA\Get(
+     *     path="/api/questions",
+     *     summary="Listar preguntas",
+     *     tags={"Preguntas"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="difficulty",
+     *         in="query",
+     *         description="Filtrar por dificultad",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"easy", "medium", "hard"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="created_by",
+     *         in="query",
+     *         description="Filtrar por creador",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de preguntas",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="questions",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Question")
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function index(Request $request): JsonResponse
     {
         $query = Question::with(['options', 'creator:id,name'])
@@ -34,7 +66,48 @@ class QuestionController extends Controller
         ]);
     }
 
-
+    /**
+     * @OA\Post(
+     *     path="/api/questions",
+     *     summary="Crear nueva pregunta",
+     *     tags={"Preguntas"},
+     *     security={{"sanctum": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"question","difficulty","options"},
+     *             @OA\Property(property="question", type="string", example="¿Cuál es la capital de Francia?"),
+     *             @OA\Property(property="difficulty", type="string", enum={"easy", "medium", "hard"}, example="easy"),
+     *             @OA\Property(
+     *                 property="options",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     required={"option_text","is_correct"},
+     *                     @OA\Property(property="option_text", type="string", example="París"),
+     *                     @OA\Property(property="is_correct", type="boolean", example=true)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Pregunta creada exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Pregunta creada exitosamente"),
+     *             @OA\Property(property="question", ref="#/components/schemas/Question")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     )
+     * )
+     */
     public function store(StoreQuestionRequest $request): JsonResponse
     {
         try {

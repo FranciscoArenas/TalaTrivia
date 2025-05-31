@@ -14,7 +14,45 @@ use Illuminate\Support\Facades\DB;
 
 class TriviaParticipationController extends Controller
 {
-
+    /**
+     * @OA\Get(
+     *     path="/api/my-trivias",
+     *     summary="Obtener trivias asignadas al jugador",
+     *     tags={"Participación en Trivias"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de trivias asignadas",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="trivias",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="id", type="integer"),
+     *                     @OA\Property(property="name", type="string"),
+     *                     @OA\Property(property="description", type="string"),
+     *                     @OA\Property(property="status", type="string"),
+     *                     @OA\Property(property="questions_count", type="integer"),
+     *                     @OA\Property(
+     *                         property="participation",
+     *                         type="object",
+     *                         @OA\Property(property="total_score", type="integer", nullable=true),
+     *                         @OA\Property(property="completed", type="boolean"),
+     *                         @OA\Property(property="started_at", type="string", format="date-time", nullable=true),
+     *                         @OA\Property(property="completed_at", type="string", format="date-time", nullable=true)
+     *                     )
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Solo jugadores pueden acceder",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
+     */
     public function myTrivias(Request $request): JsonResponse
     {
         $user = $request->user();
@@ -52,7 +90,45 @@ class TriviaParticipationController extends Controller
         ]);
     }
 
-    
+    /**
+     * @OA\Post(
+     *     path="/api/trivias/{triviaId}/start",
+     *     summary="Iniciar participación en una trivia",
+     *     tags={"Participación en Trivias"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="triviaId",
+     *         in="path",
+     *         description="ID de la trivia",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Trivia iniciada exitosamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Trivia iniciada exitosamente"),
+     *             @OA\Property(
+     *                 property="trivia",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer"),
+     *                 @OA\Property(property="name", type="string"),
+     *                 @OA\Property(property="description", type="string")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Ya has iniciado esta trivia",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="No puedes participar en esta trivia",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
+     */
     public function startTrivia(Request $request, string $triviaId): JsonResponse
     {
         $user = $request->user();
@@ -151,7 +227,44 @@ class TriviaParticipationController extends Controller
         ]);
     }
 
-
+    /**
+     * @OA\Post(
+     *     path="/api/trivias/{triviaId}/answer",
+     *     summary="Enviar respuesta a una pregunta de la trivia",
+     *     tags={"Participación en Trivias"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="triviaId",
+     *         in="path",
+     *         description="ID de la trivia",
+     *         required=true,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"question_id","question_option_id"},
+     *             @OA\Property(property="question_id", type="integer", example=1),
+     *             @OA\Property(property="question_option_id", type="integer", example=3)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Respuesta enviada correctamente",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Respuesta enviada correctamente"),
+     *             @OA\Property(property="is_correct", type="boolean", example=true),
+     *             @OA\Property(property="points_earned", type="integer", example=2),
+     *             @OA\Property(property="total_score", type="integer", example=8)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Error de validación",
+     *         @OA\JsonContent(ref="#/components/schemas/ErrorResponse")
+     *     )
+     * )
+     */
     public function submitAnswer(SubmitAnswerRequest $request, string $triviaId): JsonResponse
     {
         $user = $request->user();

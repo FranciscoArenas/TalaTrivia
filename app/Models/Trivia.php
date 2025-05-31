@@ -6,7 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-
+/**
+ * @OA\Schema(
+ *     schema="Trivia",
+ *     type="object",
+ *     title="Trivia",
+ *     required={"id", "name", "description", "status"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Trivia de Historia"),
+ *     @OA\Property(property="description", type="string", example="Una trivia sobre historia mundial"),
+ *     @OA\Property(property="status", type="string", enum={"draft", "active", "completed"}, example="active"),
+ *     @OA\Property(property="created_by", type="integer", example=1),
+ *     @OA\Property(property="starts_at", type="string", format="date-time", example="2023-01-01T10:00:00Z"),
+ *     @OA\Property(property="ends_at", type="string", format="date-time", example="2023-01-01T12:00:00Z"),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 class Trivia extends Model
 {
     use HasFactory;

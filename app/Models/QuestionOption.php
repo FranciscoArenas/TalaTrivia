@@ -5,6 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @OA\Schema(
+ *     schema="QuestionOption",
+ *     type="object",
+ *     title="Opción de Pregunta",
+ *     required={"id", "question_id", "option_text", "is_correct"},
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="question_id", type="integer", example=1),
+ *     @OA\Property(property="option_text", type="string", example="París"),
+ *     @OA\Property(property="is_correct", type="boolean", example=true),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 class QuestionOption extends Model
 {
     use HasFactory;
