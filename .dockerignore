@@ -9,6 +9,7 @@ README.md
 Dockerfile
 docker-compose.yml
 .dockerignore
+public/storage
 storage/logs/*
 !storage/logs/.gitignore
 storage/framework/cache/*

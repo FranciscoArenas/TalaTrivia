@@ -24,6 +24,8 @@ sleep 15
 echo -e "${YELLOW}Instalando dependencias de Vendor...${NC}"
 docker-compose exec -u root app composer install --no-dev --optimize-autoloader
 docker-compose exec -u root app chown -R www:www /var/www/vendor
+docker-compose exec app mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/app/public
+docker-compose exec app cp .env.example .env
 docker-compose exec app php artisan key:generate --force
 docker-compose exec app php artisan storage:link
 docker-compose exec app php artisan key:generate --force

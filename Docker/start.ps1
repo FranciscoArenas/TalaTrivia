@@ -16,9 +16,14 @@ Start-Sleep -Seconds 15
 Write-Host "Instalando dependencias de Vendor..." -ForegroundColor Yellow
 docker-compose exec -u root app composer install --no-dev --optimize-autoloader
 docker-compose exec -u root app chown -R www:www /var/www/vendor
+
+Write-Host "Configurando Laravel..." -ForegroundColor Yellow
+docker-compose exec app mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/app/public bootstrap/cache
+docker-compose exec app chmod -R 775 storage bootstrap/cache
+docker-compose exec app chown -R www:www storage bootstrap/cache
 docker-compose exec app cp .env.example .env
-docker-compose exec app php artisan storage:link
 docker-compose exec app php artisan key:generate --force
+docker-compose exec app php artisan storage:link
 
 Write-Host "Ejecutando migraciones de base de datos..." -ForegroundColor Yellow
 docker-compose exec app php artisan migrate --force
