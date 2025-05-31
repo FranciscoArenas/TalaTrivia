@@ -32,7 +32,7 @@ cd TalaTrivia
 
 #### **2️⃣ Ejecutar configuración automática**
 
-<details>
+<details open>
 <summary><strong>🐧 Para Linux/Mac</strong></summary>
 
 ```bash
@@ -42,7 +42,7 @@ chmod +x docker/start.sh
 
 </details>
 
-<details>
+<details open>
 <summary><strong>🪟 Para Windows (PowerShell)</strong></summary>
 
 ```powershell
