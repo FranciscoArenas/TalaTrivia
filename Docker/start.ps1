@@ -16,6 +16,7 @@ Start-Sleep -Seconds 15
 Write-Host "Instalando dependencias de Vendor..." -ForegroundColor Yellow
 docker-compose exec -u root app composer install --no-dev --optimize-autoloader
 docker-compose exec -u root app chown -R www:www /var/www/vendor
+docker-compose exec app cp .env.example .env
 docker-compose exec app php artisan storage:link
 docker-compose exec app php artisan key:generate --force
 
